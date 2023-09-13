@@ -1,7 +1,3 @@
-# Details
-
-
-
 # Prepare Tools
 - Run following commands at `fs` diretory 
 ```bash
@@ -45,9 +41,14 @@ cd .. &&\
 mv ./rootfs.cpio ./initramfs.cpio &&\
 rm -rf ./initramfs.cpio.gz &&\
 gzip  ./initramfs.cpio &&\
-echo "[+] Filesystem - Done" &&\
-./run.sh
+echo "[+] Filesystem - Done"
 ```
+
+# Modify run.sh for qemu
+- Set network of qemu machine
+```
+-net user,hostfwd=tcp::9999-:9999 -net nic
+``` 
 
 # Modify Docker Compose Configuration
 - Expose port 9999 to enable host debugging
@@ -64,4 +65,6 @@ services:
       - "9999"
 
 ```
+
+# Details
 
