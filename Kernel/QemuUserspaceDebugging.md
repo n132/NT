@@ -67,4 +67,4 @@ services:
 ```
 
 # Details
-[QEMU Userspace Debugging](https://n132.github.io/2023/09/12/Debug-User-a-Space-Program-in-Qemu.html)
+[QEMU Userspace Debugging](https://n132.github.io/2023/09/12/Qemu-Userspace-Debugging.html)
