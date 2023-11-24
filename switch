@@ -13,8 +13,8 @@ end
 end
 """
 pwndbg = """
-source /home/n132/pwndbg/gdbinit.py
-source /home/n132/Documents/github/gdb-pt-dump/pt.py
+source ~/pwndbg/gdbinit.py
+source ~/Documents/github/gdb-pt-dump/pt.py
 """
 
 import sys
@@ -28,6 +28,7 @@ else:
     print(f"[-] Invalid plugin: {switch}")
     exit(1)
 print(f"[+] Deploying {switch}...")
-with open("/home/n132/.gdbinit",'w') as f:
+from pathlib import Path
+with open(Path.home()/".gdbinit",'w') as f:
     f.write(content)
 print(f"[+] Deployed {switch}.")
