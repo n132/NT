@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 peda = """
-source ~/peda/peda.py
-source ~/Pwngdb/pwngdb.py
-source ~/Pwngdb/angelheap/gdbinit.py
+source /home/n132/peda/peda.py
+source /home/n132/PwnKit/pwngdb.py
+source /home/n132/PwnKit/angelheap/gdbinit.py
 
 define hook-run
 python
@@ -13,9 +13,26 @@ end
 end
 """
 pwndbg = """
-source ~/pwndbg/gdbinit.py
-source ~/Documents/github/gdb-pt-dump/pt.py
+source /home/n132/pwndbg/gdbinit.py
+source /home/n132/Documents/github/gdb-pt-dump/pt.py
 """
+
+
+pwnkit = """
+source /home/n132/pwndbg/gdbinit.py
+source /home/n132/Documents/github/gdb-pt-dump/pt.py
+# source /home/n132/peda/peda.py
+source /home/n132/PwnKit/pwngdb.py
+source /home/n132/PwnKit/angelheap/gdbinit.py
+
+define hook-run
+python
+import angelheap
+angelheap.init_angelheap()
+end
+end
+"""
+
 
 import sys
 
@@ -24,11 +41,12 @@ if switch == "peda":
     content = peda
 elif switch == "pwndbg":
     content = pwndbg
+elif switch == "n132" or switch == "pwnkit":
+    content = pwnkit
 else:
     print(f"[-] Invalid plugin: {switch}")
     exit(1)
 print(f"[+] Deploying {switch}...")
-from pathlib import Path
-with open(Path.home()/".gdbinit",'w') as f:
+with open("/home/n132/.gdbinit",'w') as f:
     f.write(content)
 print(f"[+] Deployed {switch}.")
