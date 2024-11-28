@@ -2,9 +2,9 @@
 
 # author: @n132 ;)
 # Check if the first parameter is "debug"
-NL DEBUG
 if [ "$1" == "debug" ]; then
     # Run gdb with the specified options
+    NL DEBUG
     sudo -E gdb ./vmlinux -x ./dbg
 else
     echo "Not in debug mode."
