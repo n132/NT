@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Define the existing log file path
+
+if [[ -n "$1" ]]; then
+    :
+else
+    echo "Usage: NL DEBUG/QEMU/.*"
+    exit
+fi
+
+log_file="$HOME/Documents/kernel.log"
+current_path=$(pwd) # Get the current directory path
+
+# Determine the starting counter
+if [[ -f "$log_file" ]]; then
+    # Extract the last counter from the existing log file
+    counter=$(grep -oE '[0-9]+$' "$log_file" | tail -n 1)
+    if [[ -z "$counter" ]]; then
+        counter=0 # Default counter if no valid entry is found
+    else
+        ((counter++)) # Increment the counter
+    fi
+else
+    counter=0 # Start from 0 if the file does not exist
+    touch "$log_file" # Create the log file
+fi
+
+# Function to get the current timestamp
+get_current_timestamp() {
+    date "+%Y-%m-%d %H:%M:%S"
+}
+
+# Generate logs
+timestamp=$(get_current_timestamp)
+
+echo -e "[$1]\t[$timestamp] [$current_path]: $counter" >> "$log_file"
