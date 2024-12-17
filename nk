@@ -5,7 +5,7 @@
 if [ "$1" == "debug" ]; then
     # Run gdb with the specified options
     NL DEBUG
-    sudo -E gdb ./vmlinux -x ./dbg
+    gdb ./vmlinux -x ./dbg
 else
     echo "Not in debug mode."
 fi
