@@ -19,7 +19,7 @@ source /home/n132/Documents/github/gdb-pt-dump/pt.py
 
 
 pwnkit = """
-source /home/n132/pwndbg/gdbinit.py
+source /home/n132/Documents/env/pwndbg/gdbinit.py
 source /home/n132/Documents/github/gdb-pt-dump/pt.py
 # source /home/n132/peda/peda.py
 source /home/n132/PwnKit/pwngdb.py
