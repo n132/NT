@@ -1,26 +1,43 @@
 #!/usr/bin/python3
+import sys
+import os
+from pathlib import Path
+uname = os.getlogin()
+switch = sys.argv[1]
 
-peda = """
-source /home/n132/peda/peda.py
-source /home/n132/PwnKit/pwngdb.py
+pwndbg_path = f"/home/{uname}/Documents/env/pwndbg"
+pwnkit_path = f"/home/{uname}/Documents/env/PwnKit"
+pt_path     = f"/home/{uname}/Documents/env/gdb-pt-dump"
+gef_path    = f"/home/{uname}/Documents/env/gef"
+aheap_path  = f"/home/{uname}/Documents/env/PwnKit/angelheap" 
 
+
+def exist_check(path):
+    if not Path(path).exists():
+        print("[!] {path} doesn't exist")
+        exit(1)
+
+
+exist_check(pwndbg_path)
+exist_check(pwnkit_path)
+exist_check(pt_path)
+exist_check(gef_path)
+exist_check(aheap_path)
+
+pwndbg = f"""
+source {pwndbg_path}/gdbinit.py
 """
-pwndbg = """
-source /home/n132/pwndbg/gdbinit.py
-source /home/n132/Documents/github/gdb-pt-dump/pt.py
+
+pt     = f"""
+source {pt_path}/pt.py
 """
 
-
-pwnkit = """
-source /home/n132/Documents/env/pwndbg/gdbinit.py
-source /home/n132/Documents/github/gdb-pt-dump/pt.py
-# source /home/n132/peda/peda.py
-source /home/n132/PwnKit/pwngdb.py
+pwnkit = f"""
+source {pwnkit_path}/pwngdb.py
 """
 
-angelheap = """
-# angel heap
-source /home/n132/PwnKit/angelheap/gdbinit.py
+angelheap = f"""
+source {aheap_path}/gdbinit.py
 define hook-run
 python
 import angelheap
@@ -29,23 +46,19 @@ end
 end
 """
 
-gef = """
+gef = f"""
+source {gef_path}/gef.py
 """
 
-import sys
-print(os.getlogin())
-
-switch = sys.argv[1]
-if switch == "peda":
-    content = peda
-elif switch == "pwndbg":
-    content = pwndbg
+if switch == "pwndbg":
+    content = pwndbg+pt
+elif switch == "gef":
+    content = gef+pt
 elif switch == "n132" or switch == "pwnkit":
-    content = pwnkit
+    content = pwndbg+pt+pwnkit+angelheap
 else:
     print(f"[-] Invalid plugin: {switch}")
     exit(1)
-print(f"[+] Deploying {switch}...")
-with open("/home/n132/.gdbinit",'w') as f:
+with open(f"/home/{uname}/.gdbinit",'w') as f:
     f.write(content)
 print(f"[+] Deployed {switch}.")
