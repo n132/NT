@@ -4,8 +4,13 @@
 # Check if the first parameter is "debug"
 if [ "$1" == "debug" ]; then
     # Run gdb with the specified options
-    NL DEBUG
-    sudo -E gdb ./vmlinux -x ./dbg
+    echo "DEBUG MODE"
+
+    if [ -n "$2" ]; then  # Corrected condition syntax
+        sudo -E gdb-multiarch ./vmlinux -x ./dbg
+    else
+        sudo -E gdb ./vmlinux -x ./dbg
+    fi
 else
     echo "Not in debug mode."
 fi
