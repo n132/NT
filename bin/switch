@@ -3,14 +3,7 @@
 peda = """
 source /home/n132/peda/peda.py
 source /home/n132/PwnKit/pwngdb.py
-source /home/n132/PwnKit/angelheap/gdbinit.py
 
-define hook-run
-python
-import angelheap
-angelheap.init_angelheap()
-end
-end
 """
 pwndbg = """
 source /home/n132/pwndbg/gdbinit.py
@@ -23,8 +16,11 @@ source /home/n132/Documents/env/pwndbg/gdbinit.py
 source /home/n132/Documents/github/gdb-pt-dump/pt.py
 # source /home/n132/peda/peda.py
 source /home/n132/PwnKit/pwngdb.py
-source /home/n132/PwnKit/angelheap/gdbinit.py
+"""
 
+angelheap = """
+# angel heap
+source /home/n132/PwnKit/angelheap/gdbinit.py
 define hook-run
 python
 import angelheap
@@ -33,8 +29,11 @@ end
 end
 """
 
+gef = """
+"""
 
 import sys
+print(os.getlogin())
 
 switch = sys.argv[1]
 if switch == "peda":
