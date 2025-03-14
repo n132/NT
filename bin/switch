@@ -14,7 +14,7 @@ aheap_path  = f"/home/{uname}/Documents/env/PwnKit/angelheap"
 
 def exist_check(path):
     if not Path(path).exists():
-        print("[!] {path} doesn't exist")
+        print(f"[!] {path} doesn't exist")
         exit(1)
 
 
