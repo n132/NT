@@ -1,20 +1,41 @@
 #!/bin/bash
 
 # author: @n132 ;)
+
+help() {
+    echo "Usage: $0 [debug] [multiarch]"
+    echo
+    echo "Options:"
+    echo "  debug       Download and initialize the gdb script, then run gdb."
+    echo "  multiarch   (Optional) If provided, runs gdb-multiarch instead of gdb."
+    echo
+    echo "Examples:"
+    echo "  $0 debug          # Runs gdb with the script"
+    echo "  $0 debug multiarch # Runs gdb-multiarch with the script"
+    echo "  $0 help           # Display this help message"
+    exit 0
+}
+
+# Check for help argument
+if [[ "$1" == "help" || "$1" == "--help" || "$1" == "-h" ]]; then
+    help
+fi
+
 # Check if the first parameter is "debug"
 FILE="./dbg"
 GITHUB_URL="https://raw.githubusercontent.com/n132/NT/refs/heads/main/template/dbg.tmp"
+
 if [ "$1" == "debug" ]; then
     # Run gdb with the specified options
-    echo "DEBUG MODE"
     if [ ! -f "$FILE" ]; then
+        echo "Initializing gdb script at ./dbg..."
         curl -o "$FILE" "$GITHUB_URL"
     fi
-    if [ -n "$2" ]; then  # Corrected condition syntax
+    if [ -n "$2" ]; then
         sudo -E gdb-multiarch ./vmlinux -x ./dbg
     else
         sudo -E gdb ./vmlinux -x ./dbg
     fi
 else
-    echo "Not in debug mode."
+    echo "Not in debug mode. Run '$0 help' for usage."
 fi
