@@ -1,10 +1,7 @@
-#!/bin/bash
+# gdb script for kernel debugging
+# use it when nokaslr
+# author: @n132
 
-# author: @n132 ;)
-# Check if the first parameter is "debug"
-FILE="./dbg"
-CONTENT="""
-# dbg@n132
 target remote :1234
 set $VM=0xffff888000000000
 set $BASE=0xffffffff81000000
@@ -52,18 +49,3 @@ define pgt
         printf "@n132 was too lazy to imp"
     end
 end
-"""
-if [ "$1" == "debug" ]; then
-    # Run gdb with the specified options
-    echo "DEBUG MODE"
-    if [ ! -f "$FILE" ]; then
-        echo "$CONTENT" > "$FILE"
-    fi
-    if [ -n "$2" ]; then  # Corrected condition syntax
-        sudo -E gdb-multiarch ./vmlinux -x ./dbg
-    else
-        sudo -E gdb ./vmlinux -x ./dbg
-    fi
-else
-    echo "Not in debug mode."
-fi
