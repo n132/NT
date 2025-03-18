@@ -21,27 +21,29 @@ define pgt
     printf "PGD(%p)\\Offset(%p):\n", $cr3, $pgd_off
     x/8gx $pgd_off*8+$VM+$cr3
     set $pud =  *(unsigned long long *)($pgd_off * 8 + (($cr3>>12)<<12) +$VM) 
-
+    set $pud = $pud & 0x7fffffffffffffff
     printf "PUD(%p)\\Offset(%p):\n", (($pud>>12)<<12),$pud_off
     set $pmd =  *(unsigned long long *)($pud_off * 8 + (($pud>>12)<<12) +$VM) 
+    set $pmd = $pmd & 0x7fffffffffffffff
     x/8gx ($pud_off * 8 + (($pud>>12)<<12) +$VM) 
 
     if ($pmd&(1<<7))==0
         printf "PMD(%p)\\Offset(%p):\n", (($pmd>>12)<<12), $pmd_off
         set $pt =  *(unsigned long long *)($pmd_off * 8 + (($pmd>>12)<<12) +$VM) 
+        set $pt = $pt & 0x7fffffffffffffff
         x/8gx ($pmd_off * 8 + (($pmd>>12)<<12) +$VM) 
         if ($pt&(1<<7))==0
             printf "PT(%p)\\Offset(%p):\n", (($pt>>12)<<12),$pt_off
             set $phys_addr =  *(unsigned long long *)($pt_off * 8 + (($pt>>12)<<12) +$VM) 
             x/8gx ($pt_off * 8 + (($pt>>12)<<12) +$VM) 
-            printf "Page Content:\n"
+            printf "Content:\n"
             x/8gx (($phys_addr<<1>>1)>>12<<12)+$VM
         else
             printf "Huge Page (0x200,000 Pages):\n"
             set $offset = $addr & ((1<<21)-1)
             set $pt = ($pt<<1>>1)
             set $phys_addr = (($pt>>21)<<21) + $offset
-            printf "Page Content:\n"
+            printf "Content:\n"
             x/8gx $phys_addr+$VM
         end
     else
